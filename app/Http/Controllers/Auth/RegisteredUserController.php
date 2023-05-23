@@ -24,6 +24,17 @@ class RegisteredUserController extends Controller
         return Inertia::render('Auth/Register');
     }
 
+
+    /**
+     * Display the registration users.
+     */
+    public function show(): Response
+    {
+        $users = User::all();
+
+        return Inertia::render('Our-team', ["users"=> $users]);
+    }
+
     /**
      * Handle an incoming registration request.
      *

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,8 @@ Route::get('/dashboard', function () {
 Route::get('/projects-outsourcing', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('projects-outsourcing');
+
+Route::get('/our-team', [RegisteredUserController::class, 'show'])->middleware(['auth', 'verified'])->name('our-team');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
