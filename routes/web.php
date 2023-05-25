@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,12 @@ Route::get('/dashboard', function () {
 Route::get('/projects-outsourcing', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('projects-outsourcing');
+
+Route::get('/contact-us', function () {
+    return Inertia::render('Contact');
+});
+
+Route::post('/contact-us', [ContactUsController::class, 'store'])->name('contact-us');
 
 Route::get('/our-team', [RegisteredUserController::class, 'show'])->middleware(['auth', 'verified'])->name('our-team');
 

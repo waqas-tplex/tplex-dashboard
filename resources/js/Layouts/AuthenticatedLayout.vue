@@ -13,7 +13,7 @@ const showingNavigationDropdown = ref(false);
 <template>
     <div>
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav class="bg-theme dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700" style="background-color: #545050;">
+            <nav class="bg-black dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -38,6 +38,9 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                                 <NavLink :href="route('our-team')" :active="route().current('our-team')">
                                     Our Team
+                                </NavLink>
+                                <NavLink :href="route('contact-us')" :active="route().current('contact-us')">
+                                    Contact Us
                                 </NavLink>
                             </div>
                         </div>

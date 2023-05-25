@@ -105,6 +105,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Global "Admin" Address
+    |--------------------------------------------------------------------------
+    |
+    | You may wish for all e-mails sent by your application to be sent from
+    | the same address. Here, you may specify a name and address that is
+    | used globally for all e-mails that are sent by your application.
+    |
+    */
+
+    'admin' => [
+        'address' => env('ADMIN_MAIL', 'hello@example.com'),
+        'name' => env('ADMIN_NAME', 'Example'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Markdown Mail Settings
     |--------------------------------------------------------------------------
     |
