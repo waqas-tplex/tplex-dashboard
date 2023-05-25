@@ -41,6 +41,8 @@ Route::get('/contact-us', function () {
 
 Route::post('/contact-us', [ContactUsController::class, 'store'])->name('contact-us');
 
+Route::get('/feedbacks', [ContactUsController::class, 'index'])->middleware(['auth', 'verified'])->name('feedbacks');
+
 Route::get('/our-team', [RegisteredUserController::class, 'show'])->middleware(['auth', 'verified'])->name('our-team');
 
 Route::middleware('auth')->group(function () {

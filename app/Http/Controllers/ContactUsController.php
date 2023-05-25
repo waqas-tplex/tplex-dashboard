@@ -13,6 +13,16 @@ class ContactUsController extends Controller
 {
 
     /**
+     * show all the stored contact us feedbacks.
+     */
+    public function index(): Response
+    {
+        $data = ContactUs::all();
+
+        return Inertia::render('Feedback', ['data' => $data]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(ContactUsRequest $request): Response
