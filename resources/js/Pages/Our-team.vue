@@ -27,6 +27,7 @@ defineProps({
                 
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg pt-10 pb-10 px-4">
                     <DataTable
+                        :options="{order: [0, 'desc']}"
                         :data="users"
                         class="display"
                         :columns="columns"

@@ -6,10 +6,16 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="{{asset("plugins/fontawesome-free/css/all.min.css")}}">
+        <link rel="stylesheet" href="{{asset("dist/css/adminlte.css")}}">
 
+        <!-- jQuery -->
+        <script src="{{asset("plugins/jquery/jquery.min.js")}}"></script>
+        <!-- jQuery UI 1.11.4 -->
+        <script src="{{asset("plugins/jquery-ui/jquery-ui.min.js")}}"></script>
+        <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+        <!-- AdminLTE App -->
+        <script src="{{asset("dist/js/adminlte.js")}}"></script>
         <!-- Scripts -->
         @routes
         @vite(['resources/js/app.ts', "resources/js/Pages/{$page['component']}.vue"])

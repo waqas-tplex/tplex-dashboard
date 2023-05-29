@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ToDoListController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,9 +29,9 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [MainController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::resource('/to-do-list', ToDoListController::class)->middleware(['auth', 'verified']);
 
 Route::get('/projects-outsourcing', function () {
     return Inertia::render('Dashboard');
@@ -37,9 +39,9 @@ Route::get('/projects-outsourcing', function () {
 
 Route::get('/contact-us', function () {
     return Inertia::render('Contact');
-});
+})->name('contact-us');
 
-Route::post('/contact-us', [ContactUsController::class, 'store'])->name('contact-us');
+Route::post('/contact-us', [ContactUsController::class, 'store']);
 
 Route::get('/feedbacks', [ContactUsController::class, 'index'])->middleware(['auth', 'verified'])->name('feedbacks');
 
