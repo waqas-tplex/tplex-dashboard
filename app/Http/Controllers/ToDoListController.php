@@ -16,7 +16,7 @@ class ToDoListController extends Controller
     {
         $todos = auth()->user()->toDos()->get();
 
-        return Inertia::render('ToDoList', [
+        return Inertia::render('Todo/List', [
             'todos' => $todos,
         ]);
     }
@@ -26,7 +26,7 @@ class ToDoListController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Todo/Show');
     }
 
     /**
@@ -34,7 +34,9 @@ class ToDoListController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        ToDoList::create(array_merge($request->all(), ['user_id' => auth()->user()->id]));
+
+        return redirect(route('dashboard'));
     }
 
     /**
@@ -42,7 +44,9 @@ class ToDoListController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $todo = ToDoList::find($id);
+
+        return Inertia::render('Todo/Show', ['todo' => $todo]);
     }
 
     /**
@@ -58,7 +62,9 @@ class ToDoListController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        ToDoList::where('id', $id)->update($request->except(['ends_at_diff','badge_color', 'ends_at', 'created_at', 'updated_at']));
+        ToDoList::where('id', $id)->update($request->except(['ends_at_diff','badge_color', 'created_at', 'updated_at']));
+
+        return redirect(route('dashboard'));
     }
 
     /**
@@ -66,6 +72,6 @@ class ToDoListController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        ToDoList::find($id)->delete();
     }
 }

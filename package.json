@@ -23,6 +23,8 @@
     },
     "dependencies": {
         "datatables.net-select": "^1.6.2",
-        "datatables.net-vue3": "^2.1.0"
+        "datatables.net-vue3": "^2.1.0",
+        "sortablejs": "^1.15.0",
+        "sortablejs-vue3": "^1.2.9"
     }
 }

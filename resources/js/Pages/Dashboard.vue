@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { Sortable } from "sortablejs-vue3";
 
 defineProps({
     registeredUsers: Number,
@@ -15,7 +16,18 @@ const markToDoComplete = (id, todo) => {
     form.put(route('to-do-list.update', id), {
         onSuccess: (res) => form.reset()
     });
-}; 
+};
+
+const deleteTodo = (id) => {
+    const form = useForm({});
+    form.delete(route('to-do-list.destroy', id), {
+        onSuccess: (res) => form.reset()
+    });
+};
+
+const moveItem = (event, event2) => {
+    console.log(event, event2)
+};
 
 </script>
 
@@ -53,7 +65,7 @@ const markToDoComplete = (id, todo) => {
                             <!-- small box -->
                             <div class="small-box bg-success">
                               <div class="inner">
-                                <h3>{{ todos.filter(el=> el.mark_as_done == 1).length / todos.length * 100 }}<sup style="font-size: 20px">%</sup></h3>
+                                <h3>{{ (todos.filter(el=> el.mark_as_done == 1).length / todos.length * 100 ).toFixed(2)}}<sup style="font-size: 20px">%</sup></h3>
 
                                 <p>Target Achieved</p>
                               </div>
@@ -108,47 +120,48 @@ const markToDoComplete = (id, todo) => {
                                   <i class="ion ion-clipboard mr-1"></i>
                                   To Do List
                                 </h3>
-
-                                <div class="card-tools">
-                                  <ul class="pagination pagination-sm">
-                                    <li class="page-item"><a href="#" class="page-link">&laquo;</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">3</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">&raquo;</a></li>
-                                  </ul>
-                                </div>
                               </div>
                               <!-- /.card-header -->
                               <div class="card-body">
-                                <ul class="todo-list" data-widget="todo-list">
-                                  <li v-for="todo in todos" v-bind:key="todo.id">
-                                    <!-- drag handle -->
-                                    <span class="handle">
-                                      <i class="fas fa-ellipsis-v"></i>
-                                      <i class="fas fa-ellipsis-v"></i>
-                                    </span>
-                                    <!-- checkbox -->
-                                    <div  class="icheck-primary d-inline ml-2">
-                                      <input v-if="todo.mark_as_done == true" checked type="checkbox" value="1" @click="markToDoComplete(todo.id, todo)" :id="`todoCheck-${todo.id}`" >
-                                      <input v-else type="checkbox" value="1" @click="markToDoComplete(todo.id, todo)" :id="`todoCheck-${todo.id}`" >
-                                      <label :for="`todoCheck-${todo.id}`"></label>
+                                <Sortable
+                                  :list="todos"
+                                  @move="(event: Sortable.MoveEvent, event2: Event) => moveItem(event, event2)"
+                                  item-key="id"
+                                  tag="div"
+                                  :options="{}"
+                                  class="todo-list border rounded h-80"
+                                >
+
+                                  <template #item="{element, index}">
+                                    <li>
+                                    <div class="draggable" :key="element.id">
+                                        <span class="handle">
+                                          <i class="fas fa-ellipsis-v"></i>
+                                          <i class="fas fa-ellipsis-v"></i>
+                                        </span>
+                                        <!-- checkbox -->
+                                        <div  class="icheck-primary d-inline ml-2">
+                                          <input v-if="element.mark_as_done == true" checked type="checkbox" value="1" @click="markToDoComplete(element.id, element)" :id="`todoCheck-${element.id}`" >
+                                          <input v-else type="checkbox" value="1" @click="markToDoComplete(element.id, todo)" :id="`todoCheck-${element.id}`" >
+                                          <label :for="`todoCheck-${element.id}`"></label>
+                                        </div>
+                                        <!-- todo text -->
+                                        <span class="text">{{ element.title }}</span>
+                                        <!-- Emphasis label -->
+                                        <small :class="`badge badge-${element.badge_color}`"><i class="far fa-clock"></i> {{ element.ends_at_diff }} </small>
+                                        <!-- General tools such as edit or delete-->
+                                        <div class="tools">
+                                          <a :href="route('to-do-list.show', element.id)"> <i class="fas fa-edit"> </i> </a> | 
+                                          <a href="#" @click="deleteTodo(element.id)"> <i class="fas fa-trash"> </i> </a>
+                                        </div>
                                     </div>
-                                    <!-- todo text -->
-                                    <span class="text">{{ todo.title }}</span>
-                                    <!-- Emphasis label -->
-                                    <small :class="`badge badge-${todo.badge_color}`"><i class="far fa-clock"></i> {{ todo.ends_at_diff }} hours</small>
-                                    <!-- General tools such as edit or delete-->
-                                    <div class="tools">
-                                      <i class="fas fa-edit"></i>
-                                      <i class="fas fa-trash-o"></i>
-                                    </div>
-                                  </li>
-                                </ul>
+                                </li>
+                                  </template>
+                                </Sortable>
                               </div>
                               <!-- /.card-body -->
                               <div class="card-footer clearfix">
-                                <PrimaryButton type="button" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add item</PrimaryButton>
+                                <a :href="route('to-do-list.create')" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add item</a>
                               </div>
                             </div>
                             <!-- /.card -->

@@ -17,7 +17,7 @@ class MainController extends Controller
     {
         $registeredUsers = User::count();
         $feedbacks = ContactUs::count();
-        $todos = auth()->user()->toDos()->oldest('ends_at')->get();
+        $todos = auth()->user()->toDos()->orderBy('priority', 'asc')->get();
 
         return Inertia::render('Dashboard', [
             'todos'           => $todos,

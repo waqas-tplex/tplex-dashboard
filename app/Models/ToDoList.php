@@ -22,16 +22,8 @@ class ToDoList extends Model
         'description',
         'mark_as_done',
         'priority',
-        'ends_at'
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'ends_at' => 'datetime',
+        'ends_at',
+        'user_id'
     ];
 
     /**
@@ -58,12 +50,14 @@ class ToDoList extends Model
     public function getEndsAtDiffAttribute()
     {
         if ($this->ends_at) {
-            $remaining_days = Carbon::now()->diffInMinutes(Carbon::parse($this->ends_at));
+            $remaining_days = Carbon::parse($this->ends_at)->diffForHumans();
         } else {
             $remaining_days = 0;
         }
 
-        return number_format($remaining_days/60, 1);
+        return $remaining_days;
+
+        // return number_format($remaining_days/60, 1);
     }
 
     /**
@@ -71,6 +65,10 @@ class ToDoList extends Model
      */
     public function getBadgeColorAttribute()
     {
-        return ($this->ends_at_diff < 8) ? "danger" : (($this->ends_at_diff > 8 && $this->ends_at_diff < 24) ? "warning" : "success");
+        if(Carbon::parse($this->ends_at) < Carbon::now()) {
+            return 'danger';
+        }
+
+        return strpos($this->ends_at_diff, 'hours') ? 'warning' : 'success';
     }
 }

@@ -8,7 +8,10 @@ DataTable.use(Select);
 const columns = [
   { data: 'id', title: "ID"},
   { data: 'name',title: "Name" },
-  { data: 'email', title: "Email"}
+  { data: 'email', title: "Email"},
+  { data: null, title: "Created At", render: (item)=> {
+    return new Date(item.created_at).toLocaleDateString();
+  }},
 ];
 defineProps({
     users: Array,
